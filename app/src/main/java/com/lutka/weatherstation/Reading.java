@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by Paulina on 16/11/2014.
  */
+
+/** Class which represent a sensor reading */
 public class Reading
 {
     @SerializedName("TypeID")
@@ -94,8 +96,10 @@ public class Reading
         return "Reading{" +
                 "value=" + value +
                 ", typeId='" + typeId + '\'' +
+                ", time='" + (new java.util.Date((long)time*1000)).toString() + '\'' +
                 ", locationComment='" + locationComment + '\'' +
                 ", measurementUnit='" + measurementUnit + '\'' +
+
                 '}';
     }
 

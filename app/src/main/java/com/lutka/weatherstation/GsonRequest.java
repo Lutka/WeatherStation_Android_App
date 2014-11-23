@@ -11,6 +11,10 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
+/**
+ * Created by Paulina on 16/11/2014.
+ */
+
 /** A generic class which allow to connect to the server and interpret
  * the response - json object and return it as a java object */
 public class GsonRequest<T> extends Request<T>

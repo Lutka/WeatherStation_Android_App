@@ -3,12 +3,17 @@ package com.lutka.weatherstation;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.system.OsConstants;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -17,39 +22,32 @@ import com.android.volley.toolbox.Volley;
 import com.weather.lutka.weatherstation.R;
 
 import java.util.List;
-
+/**
+ * Created by Paulina on 16/11/2014.
+ */
 
 public class MainActivity extends Activity implements Response.ErrorListener
 {
-    RequestQueue requestQueue;
-    static final String READINGS_URL = "http://weather.cs.nuim.ie/output.php";
-
+    /** Called when the activity is first created. */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-
-        GsonRequest<ReadingsFeed> readingRequest = new GsonRequest<ReadingsFeed>(READINGS_URL, this, ReadingsFeed.class){
+        Button tempButton = (Button)findViewById(R.id.btn_temperature);
+        tempButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            protected void deliverResponse(ReadingsFeed response)
+            public void onClick(View v)
             {
-                super.deliverResponse(response);
-                showReadings(response.getReadings());
-
+                Intent intent = new Intent(MainActivity.this, WeatherGraphActivity.class);
+                startActivity(intent);
             }
-        };
-        requestQueue.add(readingRequest);
+        });
 
-    }
 
-    public void showReadings(List<Reading> readings)
-    {
-        ListView listView = (ListView) findViewById(R.id.listView);
-        ArrayAdapter<Reading> readingAdapter = new ArrayAdapter<Reading>(this, android.R.layout.simple_list_item_1,android.R.id.text1, readings);
-        listView.setAdapter(readingAdapter);
+
     }
 
     @Override
