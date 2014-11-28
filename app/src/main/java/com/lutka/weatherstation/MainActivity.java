@@ -2,26 +2,17 @@ package com.lutka.weatherstation;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.system.OsConstants;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 import com.weather.lutka.weatherstation.R;
 
-import java.util.List;
 /**
  * Created by Paulina on 16/11/2014.
  */
@@ -41,7 +32,7 @@ public class MainActivity extends Activity implements Response.ErrorListener
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(MainActivity.this, WeatherGraphActivity.class);
+                Intent intent = new Intent(MainActivity.this, TemperatureGraphActivity.class);
                 startActivity(intent);
             }
         });
