@@ -35,8 +35,8 @@ public class MainActivity extends Activity implements Response.ErrorListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button tempButton = (Button)findViewById(R.id.btn_temperature);
-        tempButton.setOnClickListener(new View.OnClickListener()
+        Button temperatureButton = (Button)findViewById(R.id.btn_temperature);
+        temperatureButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -46,7 +46,16 @@ public class MainActivity extends Activity implements Response.ErrorListener
             }
         });
 
-
+        Button humidityButton = (Button)findViewById(R.id.btn_humidity);
+        humidityButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(MainActivity.this, HumidityGraphActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
