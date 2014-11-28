@@ -100,4 +100,10 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
                 .show();
     }
 
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        requestQueue.stop();
+    }
 }
