@@ -8,16 +8,10 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/temperatureGraph"
+            android:id="@+id/dataGraph"
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="250dip" />
-
-        <LinearLayout
-            android:id="@+id/humidityGraph"
-            android:layout_width="fill_parent"
-            android:layout_height="250dip"
-            android:orientation="vertical" />
 
     </LinearLayout>
 </ScrollView>
