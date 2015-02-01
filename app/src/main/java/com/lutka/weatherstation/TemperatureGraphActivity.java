@@ -8,6 +8,6 @@ public class TemperatureGraphActivity extends GraphActivity
     @Override
     protected void onResponse(ReadingsFeed response)
     {
-        drawGraph(response.getTemperatureReadings(), "Temperature");
+        drawGraph(response.getTemperatureReadings(), 0xff00ff00, response.getTemperatureForecast(),0xffff0000, "Temperature");        //forecast
     }
 }
