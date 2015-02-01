@@ -15,6 +15,12 @@ public class ReadingsFeed
     @SerializedName("HumidityReadings")
     List<Reading> humidityReadings;
 
+    @SerializedName("TemperatureForecast")
+    List<Reading> temperatureForecast;
+
+    @SerializedName("HumidityForecast")
+    List<Reading> humidityForecast;
+
     public List<Reading> getTemperatureReadings()
     {
         return temperatureReadings;
@@ -23,6 +29,16 @@ public class ReadingsFeed
     public List<Reading> getHumidityReadings()
     {
         return humidityReadings;
+    }
+
+    public List<Reading> getTemperatureForecast()
+    {
+        return temperatureForecast;
+    }
+
+    public List<Reading> getHumidityForecast()
+    {
+        return humidityForecast;
     }
 }
 
