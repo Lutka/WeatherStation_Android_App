@@ -51,29 +51,57 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
         //  GraphView.GraphViewData[] data = new GraphView.GraphViewData[];
     }
 
-    public void drawGraph(List<Reading> readings, String measurementType)
+    public void drawGraph(List<Reading> readings,int colorReadings, List<Reading> forecast, int colorForecast, String measurementType)
     {
         int num = 100;
-        int readingSize = readings.size();
+        int readingSize = 100;//readings.size();
         //obsluzyc przypadek gdy liczba elementow jest mniejsza niz 100
         GraphView.GraphViewData[] data = new GraphView.GraphViewData[num];
-        int j =0;
+        int j = 0;
         for (int i = readingSize - num; i < readingSize; i++)
         {
-            int time = readings.get(j).getTime();
-            int value = readings.get(j).getValue();
-
-            data[j] = new GraphView.GraphViewData(time, value);
-            j++;
+            int time = readings.get(i).getTime();
+            int value = readings.get(i).getValue();
+            if(j < data.length)
+            {
+                data[j] = new GraphView.GraphViewData(time, value);
+                j++;
+            }
         }
-        GraphViewSeries graphViewReadings =  new GraphViewSeries("Real data readings",
-                new GraphViewSeries.GraphViewSeriesStyle(Color.rgb(90, 250, 00),3), data);
+        GraphViewSeries graphViewReadings =  new GraphViewSeries("Readings",
+                new GraphViewSeries.GraphViewSeriesStyle(colorReadings, 3), data);
 
         // graph with dynamically genereated horizontal and vertical labels
         GraphView graphView =  new LineGraphView(this, measurementType);
 
         // add data
         graphView.addSeries(graphViewReadings);
+
+        //to include second series
+        int forecastSize = 100;//forecast.size();
+        GraphView.GraphViewData[] data1 = new GraphView.GraphViewData[num];
+        j = 0;
+        for (int i = forecastSize - num; i < forecastSize; i++)
+        {
+            int time = forecast.get(i).getTime();
+            int value = forecast.get(i).getValue();
+            if(j < data.length)
+            {
+                data1[j] = new GraphView.GraphViewData(time, value);
+                j++;
+            }
+        }
+        GraphViewSeries graphViewForecast =  new GraphViewSeries("Forecast",
+                new GraphViewSeries.GraphViewSeriesStyle(colorForecast, 3), data1);
+
+        // graph with dynamically genereated horizontal and vertical labels
+        //GraphView graphView1 =  new LineGraphView(this, measurementType);
+
+        // add data
+        graphView.addSeries(graphViewForecast);
+        /**end of second series*/
+
+
         // set view port, start=a, size=b
         graphView.setViewPort(readings.get(readingSize-num).getTime(), 10*(60*60));
         graphView.setScrollable(true);
