@@ -30,7 +30,6 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.graphs);
 
@@ -110,15 +109,12 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
         graphView.setShowLegend(true);
         graphView.setLegendAlign(GraphView.LegendAlign.BOTTOM);
 
-
         graphView.setLegendWidth(200);
 
         LinearLayout layout = (LinearLayout) findViewById(R.id.dataGraph);
 
         layout.addView(graphView);
-
     }
-
 
     @Override
     public void onErrorResponse(VolleyError error)
