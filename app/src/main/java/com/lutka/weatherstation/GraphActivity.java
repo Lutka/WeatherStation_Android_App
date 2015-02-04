@@ -11,8 +11,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.GraphViewSeries;
-import com.jjoe64.graphview.LineGraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 import com.weather.lutka.weatherstation.R;
 
 import java.util.List;
@@ -55,7 +55,18 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
         int num = 100;
         int readingSize = 100;//readings.size();
         //obsluzyc przypadek gdy liczba elementow jest mniejsza niz 100
-        GraphView.GraphViewData[] data = new GraphView.GraphViewData[num];
+
+
+        /*
+        // GraphView 4.x
+GraphView graph = new GraphView(this);
+LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(data);
+graph.addSeries(series);
+ */
+
+
+
+        DataPoint[] data = new DataPoint[num];
         int j = 0;
         for (int i = readingSize - num; i < readingSize; i++)
         {
@@ -63,20 +74,22 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
             int value = readings.get(i).getValue();
             if(j < data.length)
             {
-                data[j] = new GraphView.GraphViewData(time, value);
+                data[j] = new DataPoint(time, value);
                 j++;
             }
         }
-        GraphViewSeries graphViewReadings =  new GraphViewSeries("Readings",
-                new GraphViewSeries.GraphViewSeriesStyle(colorReadings, 3), data);
+       // GraphViewSeries graphViewReadings =  new GraphViewSeries("Readings",
+          //      new GraphViewSeries.GraphViewSeriesStyle(colorReadings, 3), data);
 
         // graph with dynamically genereated horizontal and vertical labels
-        GraphView graphView =  new LineGraphView(this, measurementType);
+        GraphView graphView =  new GraphView(this);
+
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(data);
 
         // add data
-        graphView.addSeries(graphViewReadings);
+        graphView.addSeries(series);
 
-        //to include second series
+       /* //to include second series
         int forecastSize = 100;//forecast.size();
         GraphView.GraphViewData[] data1 = new GraphView.GraphViewData[num];
         j = 0;
@@ -98,18 +111,17 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
 
         // add data
         graphView.addSeries(graphViewForecast);
-        /**end of second series*/
-
+        *//**end of second series*//*
+*/
 
         // set view port, start=a, size=b
-        graphView.setViewPort(readings.get(readingSize-num).getTime(), 10*(60*60));
-        graphView.setScrollable(true);
-        graphView.setScalable(true);//zooming
 
-        graphView.setShowLegend(true);
-        graphView.setLegendAlign(GraphView.LegendAlign.BOTTOM);
+       // graphView.setViewPort(readings.get(readingSize-num).getTime(), 10*(60*60));
+       // graphView.setScrollable(true);
+        //graphView.setScalable(true);//zooming
 
-        graphView.setLegendWidth(200);
+        //graphView.setLegendRenderer();
+        graphView.setTitle(measurementType);
 
         LinearLayout layout = (LinearLayout) findViewById(R.id.dataGraph);
 
