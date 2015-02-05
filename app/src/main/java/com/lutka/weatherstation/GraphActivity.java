@@ -57,11 +57,11 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
 
     public void drawGraph(List<Reading> readings,int colorReadings, List<Reading> forecast, int colorForecast, String measurementType)
     {
-        DataPoint[] data = listOfValuesToDataPointArray(readings);
+        DataPoint[] readingsData = listOfValuesToDataPointArray(readings);
 
         GraphView graphView = (GraphView) findViewById(R.id.dataGraph);
 
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(data);
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(readingsData);
 
         series.setDrawDataPoints(true);
         series.setDataPointsRadius(10);
