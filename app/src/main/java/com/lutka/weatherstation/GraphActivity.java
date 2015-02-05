@@ -57,26 +57,8 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
 
     public void drawGraph(List<Reading> readings,int colorReadings, List<Reading> forecast, int colorForecast, String measurementType)
     {
-        int num = readings.size();
-        int readingSize = readings.size();
-        // TODO obsluzyc przypadek gdy liczba elementow jest mniejsza niz 100
+        DataPoint[] data = listOfValuesToDataPointArray(readings);
 
-        DataPoint[] data = new DataPoint[num];
-        int j = 0;
-        for (int i = 0; i < readingSize; i++)
-        {
-            int time = readings.get(i).getTime();
-            int value = readings.get(i).getValue();
-            if(j < data.length)
-            {
-                data[j] = new DataPoint(time, value);
-                j++;
-            }
-        }
-       // GraphViewSeries graphViewReadings =  new GraphViewSeries("Readings",
-          //      new GraphViewSeries.GraphViewSeriesStyle(colorReadings, 3), data);
-
-        // graph with dynamically genereated horizontal and vertical labels
         GraphView graphView = (GraphView) findViewById(R.id.dataGraph);
 
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(data);
@@ -143,10 +125,28 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
                 .show();
     }
 
+    public DataPoint[] listOfValuesToDataPointArray(List<Reading> readings){
+
+        DataPoint[] data = new DataPoint[readings.size()];
+
+        int time;
+        int value;
+        for (int i = 0; i < readings.size(); i++)
+        {
+            time = readings.get(i).getTime();
+            value = readings.get(i).getValue();
+
+            data[i] = new DataPoint(time, value);
+        }
+        return data;
+    }
+
     @Override
     protected void onDestroy()
     {
         super.onDestroy();
         requestQueue.stop();
     }
+
+
 }
