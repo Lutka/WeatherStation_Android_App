@@ -66,7 +66,7 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
         series.setDrawDataPoints(true);
         series.setDataPointsRadius(10);
         series.setThickness(8);
-
+        series.setColor(colorReadings);
 
         series.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
@@ -74,8 +74,6 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
                 Toast.makeText(GraphActivity.this, "Series1: On Data Point clicked: " + dataPoint, Toast.LENGTH_SHORT).show();
             }
         });
-
-
         // add data
         graphView.addSeries(series);
 
