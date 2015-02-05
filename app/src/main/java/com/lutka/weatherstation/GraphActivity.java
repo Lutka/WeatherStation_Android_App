@@ -55,52 +55,45 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
         //  GraphView.GraphViewData[] data = new GraphView.GraphViewData[];
     }
 
-    public void drawGraph(List<Reading> readings,int colorReadings, List<Reading> forecast, int colorForecast, String measurementType)
+    public void drawGraph(List<Reading> readings,int readingsColor, List<Reading> forecast, int forecastColor, String measurementType)
     {
-        DataPoint[] readingsData = listOfValuesToDataPointArray(readings);
-
         GraphView graphView = (GraphView) findViewById(R.id.dataGraph);
 
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(readingsData);
+        DataPoint[] readingsData = listOfValuesToDataPointArray(readings);
+        LineGraphSeries<DataPoint> readingsSeries = new LineGraphSeries<>(readingsData);
 
-        series.setDrawDataPoints(true);
-        series.setDataPointsRadius(10);
-        series.setThickness(8);
-        series.setColor(colorReadings);
+        readingsSeries.setDrawDataPoints(true);
+        readingsSeries.setDataPointsRadius(10);
+        readingsSeries.setThickness(8);
+        readingsSeries.setColor(readingsColor);
 
-        series.setOnDataPointTapListener(new OnDataPointTapListener() {
+        readingsSeries.setOnDataPointTapListener(new OnDataPointTapListener()
+        {
+            @Override
+            public void onTap(Series series, DataPointInterface dataPoint)
+            {
+                Toast.makeText(GraphActivity.this, "Series1: On Data Point clicked: " + dataPoint, Toast.LENGTH_SHORT).show();
+            }
+        });
+        // add data
+        graphView.addSeries(readingsSeries);
+
+        DataPoint[] forecastData = listOfValuesToDataPointArray(forecast);
+        LineGraphSeries<DataPoint> forecastSeries = new LineGraphSeries<>(forecastData);
+
+        forecastSeries.setDrawDataPoints(true);
+        forecastSeries.setDataPointsRadius(10);
+        forecastSeries.setThickness(8);
+        forecastSeries.setColor(forecastColor);
+
+        forecastSeries.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
             public void onTap(Series series, DataPointInterface dataPoint) {
                 Toast.makeText(GraphActivity.this, "Series1: On Data Point clicked: " + dataPoint, Toast.LENGTH_SHORT).show();
             }
         });
         // add data
-        graphView.addSeries(series);
-
-       /* //to include second series
-        int forecastSize = 100;//forecast.size();
-        GraphView.GraphViewData[] data1 = new GraphView.GraphViewData[num];
-        j = 0;
-        for (int i = forecastSize - num; i < forecastSize; i++)
-        {
-            int time = forecast.get(i).getTime();
-            int value = forecast.get(i).getValue();
-            if(j < data.length)
-            {
-                data1[j] = new GraphView.GraphViewData(time, value);
-                j++;
-            }
-        }
-        GraphViewSeries graphViewForecast =  new GraphViewSeries("Forecast",
-                new GraphViewSeries.GraphViewSeriesStyle(colorForecast, 3), data1);
-
-        // graph with dynamically genereated horizontal and vertical labels
-        //GraphView graphView1 =  new LineGraphView(this, measurementType);
-
-        // add data
-        graphView.addSeries(graphViewForecast);
-        *//**end of second series*//*
-*/
+        graphView.addSeries(forecastSeries);
 
         // set view port, start=a, size=b
       // graphView.getViewport().setMinY(-5);
