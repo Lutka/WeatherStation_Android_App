@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -12,7 +13,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.OnDataPointTapListener;
+import com.jjoe64.graphview.series.PointsGraphSeries;
+import com.jjoe64.graphview.series.Series;
 import com.weather.lutka.weatherstation.R;
 
 import java.util.List;
@@ -52,23 +57,13 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
 
     public void drawGraph(List<Reading> readings,int colorReadings, List<Reading> forecast, int colorForecast, String measurementType)
     {
-        int num = 100;
-        int readingSize = 100;//readings.size();
-        //obsluzyc przypadek gdy liczba elementow jest mniejsza niz 100
-
-
-        /*
-        // GraphView 4.x
-GraphView graph = new GraphView(this);
-LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(data);
-graph.addSeries(series);
- */
-
-
+        int num = readings.size();
+        int readingSize = readings.size();
+        // TODO obsluzyc przypadek gdy liczba elementow jest mniejsza niz 100
 
         DataPoint[] data = new DataPoint[num];
         int j = 0;
-        for (int i = readingSize - num; i < readingSize; i++)
+        for (int i = 0; i < readingSize; i++)
         {
             int time = readings.get(i).getTime();
             int value = readings.get(i).getValue();
@@ -82,9 +77,22 @@ graph.addSeries(series);
           //      new GraphViewSeries.GraphViewSeriesStyle(colorReadings, 3), data);
 
         // graph with dynamically genereated horizontal and vertical labels
-        GraphView graphView =  new GraphView(this);
+        GraphView graphView = (GraphView) findViewById(R.id.dataGraph);
 
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(data);
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(data);
+
+        series.setDrawDataPoints(true);
+        series.setDataPointsRadius(10);
+        series.setThickness(8);
+
+
+        series.setOnDataPointTapListener(new OnDataPointTapListener() {
+            @Override
+            public void onTap(Series series, DataPointInterface dataPoint) {
+                Toast.makeText(GraphActivity.this, "Series1: On Data Point clicked: " + dataPoint, Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         // add data
         graphView.addSeries(series);
@@ -115,17 +123,16 @@ graph.addSeries(series);
 */
 
         // set view port, start=a, size=b
-
-       // graphView.setViewPort(readings.get(readingSize-num).getTime(), 10*(60*60));
-       // graphView.setScrollable(true);
-        //graphView.setScalable(true);//zooming
+      // graphView.getViewport().setMinY(-5);
+      // graphView.getViewport().setMaxY(25);
 
         //graphView.setLegendRenderer();
         graphView.setTitle(measurementType);
+        graphView.getViewport().setXAxisBoundsManual(true);
+        graphView.getViewport().setYAxisBoundsManual(true);
+        graphView.getViewport().setScalable(true);
+        graphView.getViewport().setScrollable(true);
 
-        LinearLayout layout = (LinearLayout) findViewById(R.id.dataGraph);
-
-        layout.addView(graphView);
     }
 
     @Override
