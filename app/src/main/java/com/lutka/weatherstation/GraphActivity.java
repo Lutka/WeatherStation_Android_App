@@ -2,9 +2,7 @@ package com.lutka.weatherstation;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -16,10 +14,10 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.OnDataPointTapListener;
-import com.jjoe64.graphview.series.PointsGraphSeries;
 import com.jjoe64.graphview.series.Series;
 import com.weather.lutka.weatherstation.R;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -55,6 +53,24 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
         //  GraphView.GraphViewData[] data = new GraphView.GraphViewData[];
     }
 
+    public static String convertUnixTimeToDate(double unixTime)
+    {
+        long timeStamp = (long) unixTime * 1000;
+
+        //Date d = new Date(timeStamp);
+       // return (d.toString());
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTimeInMillis((long) unixTime * 1000);
+        // has to deal with am/pm
+        return (""+ calendar.get(Calendar.HOUR)+":"+ calendar.get(Calendar.MINUTE)+ " "+ setAmPm(calendar.get(Calendar.AM_PM)) +
+                "\n"+calendar.get(Calendar.DAY_OF_MONTH)+"/"+calendar.get(Calendar.MONTH)+"/"+calendar.get(Calendar.YEAR));
+    }
+
+    public static String setAmPm(int AmPm){
+        return(AmPm ==1)?"AM":"PM";
+    }
+
     public void drawGraph(List<Reading> readings,int readingsColor, List<Reading> forecast, int forecastColor, String measurementType)
     {
         GraphView graphView = (GraphView) findViewById(R.id.dataGraph);
@@ -72,7 +88,7 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
             @Override
             public void onTap(Series series, DataPointInterface dataPoint)
             {
-                Toast.makeText(GraphActivity.this, "Series1: On Data Point clicked: " + dataPoint, Toast.LENGTH_SHORT).show();
+                Toast.makeText(GraphActivity.this, "Readings:\nDate: " + convertUnixTimeToDate(dataPoint.getX()) +"\nValue: "+dataPoint.getY(), Toast.LENGTH_SHORT).show();
             }
         });
         // add data
@@ -89,7 +105,7 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
         forecastSeries.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
             public void onTap(Series series, DataPointInterface dataPoint) {
-                Toast.makeText(GraphActivity.this, "Series1: On Data Point clicked: " + dataPoint, Toast.LENGTH_SHORT).show();
+                Toast.makeText(GraphActivity.this, "Forecast:\nDate: " +convertUnixTimeToDate(dataPoint.getX()) +"\nValue: "+dataPoint.getY(), Toast.LENGTH_SHORT).show();
             }
         });
         // add data
@@ -122,6 +138,7 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
 
         int time;
         int value;
+        //long epoch = System.currentTimeMillis()/1000;
         for (int i = 0; i < readings.size(); i++)
         {
             time = readings.get(i).getTime();
