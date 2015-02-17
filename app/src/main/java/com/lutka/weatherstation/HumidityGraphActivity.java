@@ -10,8 +10,6 @@ public class HumidityGraphActivity extends GraphActivity
     protected void onResponse(ReadingsFeed response)
     {
         //readings
-        drawGraph(response.getHumidityReadings(), 0xff00ff00, response.getHumidityForecast(), 0xffff0000,"Humidity");
-
-
+        drawGraph(response.getHumidityReadings(), 0x00ff00, response.getHumidityForecast(), 0xffff0000,"Humidity");
     }
 }
