@@ -10,6 +10,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -18,6 +19,8 @@ import com.jjoe64.graphview.series.Series;
 import com.weather.lutka.weatherstation.R;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -27,6 +30,8 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
 {
     RequestQueue requestQueue;
     static final String READINGS_URL = "http://weather.cs.nuim.ie/output.php";
+
+    HashMap<DataPoint, Integer> dataPointsToTimeStamp = new HashMap<>();
 
     protected abstract void onResponse(ReadingsFeed response);
 
@@ -53,22 +58,16 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
         //  GraphView.GraphViewData[] data = new GraphView.GraphViewData[];
     }
 
-    public static String convertUnixTimeToDate(double unixTime)
+    public static String convertUnixTimeToDate(int unixTime)
     {
-        long timeStamp = (long) unixTime * 1000;
-
-        //Date d = new Date(timeStamp);
+             //Date d = new Date(timeStamp);
        // return (d.toString());
         Calendar calendar = Calendar.getInstance();
 
         calendar.setTimeInMillis((long) unixTime * 1000);
         // has to deal with am/pm
-        return (""+ calendar.get(Calendar.HOUR)+":"+ calendar.get(Calendar.MINUTE)+ " "+ setAmPm(calendar.get(Calendar.AM_PM)) +
-                "\n"+calendar.get(Calendar.DAY_OF_MONTH)+"/"+calendar.get(Calendar.MONTH)+"/"+calendar.get(Calendar.YEAR));
-    }
-
-    public static String setAmPm(int AmPm){
-        return(AmPm ==1)?"AM":"PM";
+        return ("Time: "+ calendar.get(Calendar.HOUR_OF_DAY)+":"+ calendar.get(Calendar.MINUTE)+ "\nDate: "+
+                "\n"+calendar.get(Calendar.DAY_OF_MONTH)+"/"+ (calendar.get(Calendar.MONTH)+1) +"/"+calendar.get(Calendar.YEAR));
     }
 
     public void drawGraph(List<Reading> readings,int readingsColor, List<Reading> forecast, int forecastColor, String measurementType)
@@ -88,7 +87,7 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
             @Override
             public void onTap(Series series, DataPointInterface dataPoint)
             {
-                Toast.makeText(GraphActivity.this, "Readings:\nDate: " + convertUnixTimeToDate(dataPoint.getX()) +"\nValue: "+dataPoint.getY(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(GraphActivity.this, "Readings:\n" + convertUnixTimeToDate(dataPointsToTimeStamp.get(dataPoint)) +"\nValue: "+dataPoint.getY(), Toast.LENGTH_SHORT).show();
             }
         });
         // add data
@@ -105,7 +104,7 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
         forecastSeries.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
             public void onTap(Series series, DataPointInterface dataPoint) {
-                Toast.makeText(GraphActivity.this, "Forecast:\nDate: " +convertUnixTimeToDate(dataPoint.getX()) +"\nValue: "+dataPoint.getY(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(GraphActivity.this, "Forecast:\n" +convertUnixTimeToDate(dataPointsToTimeStamp.get(dataPoint)) +"\nValue: "+dataPoint.getY(), Toast.LENGTH_SHORT).show();
             }
         });
         // add data
@@ -116,6 +115,12 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
       // graphView.getViewport().setMaxY(25);
 
         //graphView.setLegendRenderer();
+
+        graphView.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
+        //---set horizontal labels - could be good idea to calculate for how many day there is the data
+        //graphView.getGridLabelRenderer().setNumHorizontalLabels(10);
+
+
         graphView.setTitle(measurementType);
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setYAxisBoundsManual(true);
@@ -138,13 +143,18 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
 
         int time;
         int value;
+        DataPoint dataPoint;
         //long epoch = System.currentTimeMillis()/1000;
         for (int i = 0; i < readings.size(); i++)
         {
-            time = readings.get(i).getTime();
+           time =readings.get(i).getTime();
+            //time = readings.get(i).getTime();
             value = readings.get(i).getValue();
 
-            data[i] = new DataPoint(time, value);
+            dataPoint = new DataPoint(new Date ((long)(time)*1000), value);
+            data[i] = dataPoint;
+
+            dataPointsToTimeStamp.put(dataPoint, time );
         }
         return data;
     }
@@ -155,6 +165,4 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
         super.onDestroy();
         requestQueue.stop();
     }
-
-
 }
