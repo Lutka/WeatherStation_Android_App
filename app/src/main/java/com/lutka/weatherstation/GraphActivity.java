@@ -66,7 +66,7 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
 
         calendar.setTimeInMillis((long) unixTime * 1000);
         // has to deal with am/pm
-        return ("Time: "+ calendar.get(Calendar.HOUR_OF_DAY)+":"+ calendar.get(Calendar.MINUTE)+ "\nDate: "+
+        return ("Time: "+ calendar.get(Calendar.HOUR_OF_DAY)+":00"+ "\nDate: "+
                 "\n"+calendar.get(Calendar.DAY_OF_MONTH)+"/"+ (calendar.get(Calendar.MONTH)+1) +"/"+calendar.get(Calendar.YEAR));
     }
 
