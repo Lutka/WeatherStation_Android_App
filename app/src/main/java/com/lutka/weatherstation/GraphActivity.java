@@ -62,8 +62,6 @@ public abstract class GraphActivity extends Fragment implements Response.ErrorLi
 
     public static String convertUnixTimeToDate(int unixTime)
     {
-             //Date d = new Date(timeStamp);
-       // return (d.toString());
         Calendar calendar = Calendar.getInstance();
 
         calendar.setTimeInMillis((long) unixTime * 1000);
@@ -146,11 +144,9 @@ public abstract class GraphActivity extends Fragment implements Response.ErrorLi
         int time;
         int value;
         DataPoint dataPoint;
-        //long epoch = System.currentTimeMillis()/1000;
         for (int i = 0; i < readings.size(); i++)
         {
-           time =readings.get(i).getTime();
-            //time = readings.get(i).getTime();
+            time =readings.get(i).getTime();
             value = readings.get(i).getValue();
 
             dataPoint = new DataPoint(new Date ((long)(time)*1000), value);
