@@ -2,7 +2,11 @@ package com.lutka.weatherstation;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -26,7 +30,7 @@ import java.util.List;
 /**
  * Created by Paulina on 28/11/2014.
  */
-public abstract class GraphActivity extends Activity implements Response.ErrorListener
+public abstract class GraphActivity extends Fragment implements Response.ErrorListener
 {
     RequestQueue requestQueue;
     static final String READINGS_URL = "http://weather.cs.nuim.ie/output.php";
@@ -36,12 +40,11 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
     protected abstract void onResponse(ReadingsFeed response);
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.graphs);
+        View layout = inflater.inflate(R.layout.graphs, container, false);
 
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue = Volley.newRequestQueue(getActivity());
 
         GsonRequest<ReadingsFeed> readingRequest = new GsonRequest<ReadingsFeed>(READINGS_URL, this, ReadingsFeed.class)
         {
@@ -54,8 +57,7 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
         };
         requestQueue.add(readingRequest);
 
-        // int num = 100;
-        //  GraphView.GraphViewData[] data = new GraphView.GraphViewData[];
+      return layout;
     }
 
     public static String convertUnixTimeToDate(int unixTime)
@@ -72,7 +74,7 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
 
     public void drawGraph(List<Reading> readings,int readingsColor, List<Reading> forecast, int forecastColor, String measurementType)
     {
-        GraphView graphView = (GraphView) findViewById(R.id.dataGraph);
+        GraphView graphView = (GraphView) getView().findViewById(R.id.dataGraph);
 
         DataPoint[] readingsData = listOfValuesToDataPointArray(readings);
         LineGraphSeries<DataPoint> readingsSeries = new LineGraphSeries<>(readingsData);
@@ -87,7 +89,7 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
             @Override
             public void onTap(Series series, DataPointInterface dataPoint)
             {
-                Toast.makeText(GraphActivity.this, "Readings:\n" + convertUnixTimeToDate(dataPointsToTimeStamp.get(dataPoint)) +"\nValue: "+dataPoint.getY(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Readings:\n" + convertUnixTimeToDate(dataPointsToTimeStamp.get(dataPoint)) +"\nValue: "+dataPoint.getY(), Toast.LENGTH_SHORT).show();
             }
         });
         // add data
@@ -104,7 +106,7 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
         forecastSeries.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
             public void onTap(Series series, DataPointInterface dataPoint) {
-                Toast.makeText(GraphActivity.this, "Forecast:\n" +convertUnixTimeToDate(dataPointsToTimeStamp.get(dataPoint)) +"\nValue: "+dataPoint.getY(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Forecast:\n" +convertUnixTimeToDate(dataPointsToTimeStamp.get(dataPoint)) +"\nValue: "+dataPoint.getY(), Toast.LENGTH_SHORT).show();
             }
         });
         // add data
@@ -116,7 +118,7 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
 
         //graphView.setLegendRenderer();
 
-        graphView.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
+        graphView.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
         //---set horizontal labels - could be good idea to calculate for how many day there is the data
         //graphView.getGridLabelRenderer().setNumHorizontalLabels(10);
 
@@ -132,7 +134,7 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
     @Override
     public void onErrorResponse(VolleyError error)
     {
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(getActivity())
                 .setMessage(error.getMessage())
                 .show();
     }
@@ -160,7 +162,7 @@ public abstract class GraphActivity extends Activity implements Response.ErrorLi
     }
 
     @Override
-    protected void onDestroy()
+    public void onDestroy()
     {
         super.onDestroy();
         requestQueue.stop();

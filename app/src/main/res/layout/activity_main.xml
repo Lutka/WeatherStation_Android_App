@@ -1,23 +1,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:weightSum="1">
+    android:layout_height="match_parent"
+    android:layout_weight="1">
 
-    <Button
-        android:layout_width="146dp"
-        android:layout_height="wrap_content"
-        android:text="Temperature"
-        android:id="@+id/btn_temperature"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.14"/>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
 
-    <Button
-        android:layout_width="146dp"
-        android:layout_height="wrap_content"
-        android:text="Humidity"
-        android:id="@+id/btn_humidity"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.14"/>
+        <android.support.v4.view.PagerTitleStrip
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:textColor="#000" />
+
+    </android.support.v4.view.ViewPager>
+
 </LinearLayout>

@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-
+import android.widget.SectionIndexer;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.weather.lutka.weatherstation.R;
@@ -19,6 +21,11 @@ import com.weather.lutka.weatherstation.R;
 
 public class MainActivity extends Activity implements Response.ErrorListener
 {
+    //adapter for keeping fragments
+    SectionsPagerAdapter mSectionsPagerAdapter;
+    //viewPager that will host the section contents
+    ViewPager mViewPager;
+
     /** Called when the activity is first created. */
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -26,31 +33,15 @@ public class MainActivity extends Activity implements Response.ErrorListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button temperatureButton = (Button)findViewById(R.id.btn_temperature);
-        temperatureButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(MainActivity.this, TemperatureGraphActivity.class);
-                startActivity(intent);
-            }
-        });
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
+        mViewPager = (ViewPager)findViewById(R.id.pager);
 
-        Button humidityButton = (Button)findViewById(R.id.btn_humidity);
-        humidityButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(MainActivity.this, HumidityGraphActivity.class);
-                startActivity(intent);
-            }
-        });
+        mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener());
     }
 
-    @Override
+  @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -58,7 +49,7 @@ public class MainActivity extends Activity implements Response.ErrorListener
         return true;
     }
 
-    @Override
+  @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         // Handle action bar item clicks here. The action bar will
@@ -74,7 +65,6 @@ public class MainActivity extends Activity implements Response.ErrorListener
 
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     public void onErrorResponse(VolleyError error)
