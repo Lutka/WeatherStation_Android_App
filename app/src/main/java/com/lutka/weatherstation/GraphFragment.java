@@ -36,28 +36,54 @@ public abstract class GraphFragment extends Fragment implements Response.ErrorLi
     static final String READINGS_URL = "http://weather.cs.nuim.ie/output.php";
 
     HashMap<DataPoint, Integer> dataPointsToTimeStamp = new HashMap<>();
+    ReadingsFeed response = null;
 
     protected abstract void onResponse(ReadingsFeed response);
+
+
+    @Override
+    public void onDestroyView()
+    {
+        //cancel any requests this might have been sent to avoid crashes
+        //want to graph response on a fragment with no longer exists
+        requestQueue.cancelAll(this);
+        super.onDestroyView();
+        dataPointsToTimeStamp.clear();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
     {
-        View layout = inflater.inflate(R.layout.graphs, container, false);
+        return inflater.inflate(R.layout.graphs, container, false);
+    }
 
-        requestQueue = Volley.newRequestQueue(getActivity());
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
+        if(response != null)
+        {
+            onResponse(response);
+        }
 
         GsonRequest<ReadingsFeed> readingRequest = new GsonRequest<ReadingsFeed>(READINGS_URL, this, ReadingsFeed.class)
         {
             @Override
-            protected void deliverResponse(ReadingsFeed response)
+            protected void deliverResponse(ReadingsFeed resReadingsFeed)
             {
-                super.deliverResponse(response);
-                onResponse(response);
+                super.deliverResponse(resReadingsFeed);
+                response = resReadingsFeed;
+                onResponse(resReadingsFeed);
             }
         };
         requestQueue.add(readingRequest);
+    }
 
-      return layout;
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        requestQueue = Volley.newRequestQueue(getActivity());
     }
 
     public static String convertUnixTimeToDate(int unixTime)

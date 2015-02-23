@@ -14,6 +14,8 @@ import com.weather.lutka.weatherstation.R;
 
 public class MainActivity extends Activity
 {
+    Fragment temperatureFragment,
+            humidityFragment;
 
     /** Called when the activity is first created. */
     @Override
@@ -21,8 +23,9 @@ public class MainActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Fragment fragment = new HumidityGraphFragment();
-        displayFragment(fragment);
+        temperatureFragment = new TemperatureGraphFragment();
+        humidityFragment = new HumidityGraphFragment();
+        displayFragment(temperatureFragment);
     }
 
     @Override
@@ -31,15 +34,12 @@ public class MainActivity extends Activity
         switch(item.getItemId())
         {
             case R.id.temperature:
-                Fragment temperatureFragment = new TemperatureGraphFragment();
                 displayFragment(temperatureFragment);
                 return true;
 
             case R.id.humidity:
-                Fragment humidityFragment = new HumidityGraphFragment();
                 displayFragment(humidityFragment);
                 return true;
-
         }
         return super.onOptionsItemSelected(item);
     }
