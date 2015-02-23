@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * Created by Paulina on 28/11/2014.
  */
-public abstract class GraphActivity extends Fragment implements Response.ErrorListener
+public abstract class GraphFragment extends Fragment implements Response.ErrorListener
 {
     RequestQueue requestQueue;
     static final String READINGS_URL = "http://weather.cs.nuim.ie/output.php";

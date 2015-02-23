@@ -3,7 +3,7 @@ package com.lutka.weatherstation;
 /**
  * Created by Paulina on 23/11/2014.
  */
-public class TemperatureGraphFragment extends GraphActivity
+public class TemperatureGraphFragment extends GraphFragment
 {
     @Override
     protected void onResponse(ReadingsFeed response)

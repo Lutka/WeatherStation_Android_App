@@ -4,7 +4,7 @@ package com.lutka.weatherstation;
 /**
  * Created by Paulina on 28/11/2014.
  */
-public class HumidityGraphFragment extends GraphActivity
+public class HumidityGraphFragment extends GraphFragment
 {
     @Override
     protected void onResponse(ReadingsFeed response)
