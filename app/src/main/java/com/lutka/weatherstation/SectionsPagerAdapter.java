@@ -22,13 +22,14 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter
 
         if (position == 0)
         {
-            fragment = new TemperatureGraphActivity();
+            fragment = new TemperatureGraphFragment();
         }
         else
         {
-            fragment = new HumidityGraphActivity();
+            fragment = new HumidityGraphFragment();
         }
 
+        //TODO napisac co to konkretnie robi
         Bundle args = new Bundle();
         args.putInt("page", position);
         fragment.setArguments(args);
@@ -39,5 +40,18 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter
     public int getCount()
     {
         return 2;
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position)
+    {
+        if(position == 0)
+        {
+            return "TEMPERATURE";
+        }
+        else
+        {
+            return "HUMIDITY";
+        }
     }
 }
