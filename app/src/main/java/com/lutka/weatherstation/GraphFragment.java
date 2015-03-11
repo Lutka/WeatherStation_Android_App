@@ -40,7 +40,6 @@ public abstract class GraphFragment extends Fragment implements Response.ErrorLi
 
     protected abstract void onResponse(ReadingsFeed response);
 
-
     @Override
     public void onDestroyView()
     {
@@ -89,7 +88,6 @@ public abstract class GraphFragment extends Fragment implements Response.ErrorLi
     public static String convertUnixTimeToDate(int unixTime)
     {
         Calendar calendar = Calendar.getInstance();
-
         calendar.setTimeInMillis((long) unixTime * 1000);
         // has to deal with am/pm
         return ("Time: "+ calendar.get(Calendar.HOUR_OF_DAY)+":00"+ "\nDate: "+
@@ -104,7 +102,7 @@ public abstract class GraphFragment extends Fragment implements Response.ErrorLi
         LineGraphSeries<DataPoint> readingsSeries = new LineGraphSeries<>(readingsData);
 
         readingsSeries.setDrawDataPoints(true);
-        readingsSeries.setDataPointsRadius(10);
+        readingsSeries.setDataPointsRadius(6);
         readingsSeries.setThickness(8);
         readingsSeries.setColor(readingsColor);
 
@@ -123,7 +121,7 @@ public abstract class GraphFragment extends Fragment implements Response.ErrorLi
         LineGraphSeries<DataPoint> forecastSeries = new LineGraphSeries<>(forecastData);
 
         forecastSeries.setDrawDataPoints(true);
-        forecastSeries.setDataPointsRadius(10);
+        forecastSeries.setDataPointsRadius(6);
         forecastSeries.setThickness(8);
         forecastSeries.setColor(forecastColor);
 
@@ -135,24 +133,13 @@ public abstract class GraphFragment extends Fragment implements Response.ErrorLi
         });
         // add data
         graphView.addSeries(forecastSeries);
-
-        // set view port, start=a, size=b
-      // graphView.getViewport().setMinY(-5);
-      // graphView.getViewport().setMaxY(25);
-
-        //graphView.setLegendRenderer();
-
         graphView.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
-        //---set horizontal labels - could be good idea to calculate for how many day there is the data
-        //graphView.getGridLabelRenderer().setNumHorizontalLabels(10);
-
 
         graphView.setTitle(measurementType);
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setYAxisBoundsManual(true);
         graphView.getViewport().setScalable(true);
         graphView.getViewport().setScrollable(true);
-
     }
 
     @Override
