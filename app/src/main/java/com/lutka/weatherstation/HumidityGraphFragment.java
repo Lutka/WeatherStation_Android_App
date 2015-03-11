@@ -2,7 +2,10 @@
 package com.lutka.weatherstation;
 
 /**
- * Created by Paulina on 28/11/2014.
+ * A class which extends GraphFragment and calls drawGraph using humidity related values and parameters
+ * @author Paulina
+ * @version 1.0
+ * @since 28/11/2014.
  */
 public class HumidityGraphFragment extends GraphFragment
 {

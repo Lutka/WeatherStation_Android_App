@@ -9,7 +9,12 @@ import android.view.MenuItem;
 import com.weather.lutka.weatherstation.R;
 
 /**
- * Created by Paulina on 16/11/2014.
+ * This activity is created when an application starts,
+ * it takes care of switching between different Fragment types: humidity, temperature
+ *
+ * @author Paulina
+ * @version 1.0
+ * @since 16/11/2014.
  */
 
 public class MainActivity extends Activity
@@ -31,6 +36,7 @@ public class MainActivity extends Activity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
+        //switch for displaying the right fragment
         switch(item.getItemId())
         {
             case R.id.temperature:
@@ -53,6 +59,12 @@ public class MainActivity extends Activity
         return true;
     }
 
+    /**
+     * This method displays the requested fragment, depending on user choice is gonna be:
+     * temperature or humidity graph
+     *
+     *@param fragment can be either humidityFragment of temperatureFragment
+    */
     public void displayFragment(Fragment fragment)
     {
         getFragmentManager().beginTransaction().replace(R.id.fragment, fragment).commit();

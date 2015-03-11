@@ -28,7 +28,11 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by Paulina on 28/11/2014.
+ * This class is a super class for TemperatureGraphFragment and HumidityGraphFragment classes
+ *
+ * @author Paulina
+ * @version 1.0
+ * @since 28/11/2014.
  */
 public abstract class GraphFragment extends Fragment implements Response.ErrorListener
 {
@@ -66,6 +70,7 @@ public abstract class GraphFragment extends Fragment implements Response.ErrorLi
         }
         else
         {
+            //assing values returned by the Gson library to the GsonRequest<ReadingsFeed> structure
             GsonRequest<ReadingsFeed> readingRequest = new GsonRequest<ReadingsFeed>(READINGS_URL, this, ReadingsFeed.class)
             {
                 @Override
@@ -87,6 +92,12 @@ public abstract class GraphFragment extends Fragment implements Response.ErrorLi
         requestQueue = Volley.newRequestQueue(getActivity());
     }
 
+    /**
+     * This method converts integer value of the unix time representation to the human readable format,
+     * Hour:Minutes, Day/Month/Year
+     * @param unixTime integer representation of the time since 1/01/1970
+     * @return string
+     */
     public static String convertUnixTimeToDate(int unixTime)
     {
         Calendar calendar = Calendar.getInstance();
@@ -95,6 +106,16 @@ public abstract class GraphFragment extends Fragment implements Response.ErrorLi
         return ("Time: "+ calendar.get(Calendar.HOUR_OF_DAY)+":00"+ "\nDate: "+
                 "\n"+calendar.get(Calendar.DAY_OF_MONTH)+"/"+ (calendar.get(Calendar.MONTH)+1) +"/"+calendar.get(Calendar.YEAR));
     }
+
+    /**
+     * This method takes in list of Readings and display the data on the graph
+     *
+     * @param readings real reading values particular type (temp, humidity)
+     * @param readingsColor chosen color for displaying readings series
+     * @param forecast forecast values of particular type (temp, humidity)
+     * @param forecastColor chosen color for displaying forecast series
+     * @param measurementType can be either (temperature or humidity)
+     */
 
     public void drawGraph(List<Reading> readings,int readingsColor, List<Reading> forecast, int forecastColor, String measurementType)
     {
@@ -137,6 +158,7 @@ public abstract class GraphFragment extends Fragment implements Response.ErrorLi
         graphView.addSeries(forecastSeries);
         graphView.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
 
+        //graph setup
         graphView.setTitle(measurementType);
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setYAxisBoundsManual(true);
@@ -152,6 +174,14 @@ public abstract class GraphFragment extends Fragment implements Response.ErrorLi
                 .show();
     }
 
+    /**
+     * This method builds builds up DataPoint array (to be displayed on the graph)
+     * and dataPointsToTimeStamp hashMap(to be able to display human readable data format, when click on graph recorded)
+     * using in both cases list of readings
+     *
+     * @param readings list of Readings: temperature-forecast, humidity-real readings, etc.
+     * @return data DataPoint array type needed in order to graph the data
+     */
     public DataPoint[] listOfValuesToDataPointArray(List<Reading> readings){
 
         DataPoint[] data = new DataPoint[readings.size()];

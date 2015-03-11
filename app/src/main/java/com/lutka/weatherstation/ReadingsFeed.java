@@ -5,7 +5,11 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
- * Created by Paulina on 16/11/2014.
+ * This class represents data coming from server
+ *
+ * @author Paulina
+ * @version 1.0
+ * @since 16/11/2014.
  */
 public class ReadingsFeed
 {
