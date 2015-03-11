@@ -64,18 +64,20 @@ public abstract class GraphFragment extends Fragment implements Response.ErrorLi
         {
             onResponse(response);
         }
-
-        GsonRequest<ReadingsFeed> readingRequest = new GsonRequest<ReadingsFeed>(READINGS_URL, this, ReadingsFeed.class)
+        else
         {
-            @Override
-            protected void deliverResponse(ReadingsFeed resReadingsFeed)
+            GsonRequest<ReadingsFeed> readingRequest = new GsonRequest<ReadingsFeed>(READINGS_URL, this, ReadingsFeed.class)
             {
-                super.deliverResponse(resReadingsFeed);
-                response = resReadingsFeed;
-                onResponse(resReadingsFeed);
-            }
-        };
-        requestQueue.add(readingRequest);
+                @Override
+                protected void deliverResponse(ReadingsFeed resReadingsFeed)
+                {
+                    super.deliverResponse(resReadingsFeed);
+                    response = resReadingsFeed;
+                    onResponse(resReadingsFeed);
+                }
+            };
+            requestQueue.add(readingRequest);
+        }
     }
 
     @Override
