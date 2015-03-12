@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -197,7 +198,7 @@ public abstract class GraphFragment extends Fragment implements Response.ErrorLi
             dataPoint = new DataPoint(new Date ((long)(time)*1000), value);
             data[i] = dataPoint;
 
-            dataPointsToTimeStamp.put(dataPoint, time );
+            dataPointsToTimeStamp.put(dataPoint, time);
         }
         return data;
     }
