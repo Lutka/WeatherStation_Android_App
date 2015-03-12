@@ -5,13 +5,13 @@ package com.lutka.weatherstation;
  *
  * @author Paulina
  * @version 1.0
- * @since Paulina on 23/11/2014.
+ * @since 23/11/2014.
  */
 public class TemperatureGraphFragment extends GraphFragment
 {
     @Override
     protected void onResponse(ReadingsFeed response)
     {
-        drawGraph(response.getTemperatureReadings(), 0xff00ff00, response.getTemperatureForecast(),0xffff0000, "Temperature");        //forecast
+        drawGraph(response.getTemperatureReadings(), 0xff00ff00, response.getTemperatureForecast(),0xffff0000, "Temperature");
     }
 }

@@ -2,11 +2,14 @@ package com.lutka.weatherstation;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by Paulina on 16/11/2014.
- */
-
-/** Class which represent a sensor reading */
+/** Class which represent a sensor reading its parameters are as follow:typeId (H/T), specId, sensorId,
+ * locationId, readingId, time, value, latitude, longitude, locationType (i/o), locationComment,
+ * deviceId, sensorModel, sensorAccuracy, sensorMinimum, sensorMaximum, measurementUnit.
+ *
+ * @author Paulina
+ * @version 1.0
+ * @since 16/11/2014
+ * */
 public class Reading
 {
     @SerializedName("TypeID")
