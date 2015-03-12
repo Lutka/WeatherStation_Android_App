@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 /** Class which represent a sensor reading its parameters are as follow:typeId (H/T), specId, sensorId,
  * locationId, readingId, time, value, latitude, longitude, locationType (i/o), locationComment,
- * deviceId, sensorModel, sensorAccuracy, sensorMinimum, sensorMaximum, measurementUnit.
+ * deviceId, sensorModel, sensorAccuracy, sensorMinimum, sensorMaximum, measurementUnit
  *
  * @author Paulina
  * @version 1.0
