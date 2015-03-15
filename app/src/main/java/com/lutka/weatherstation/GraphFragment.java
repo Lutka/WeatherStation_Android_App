@@ -15,6 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.DataPointInterface;
@@ -144,6 +145,7 @@ public abstract class GraphFragment extends Fragment implements Response.ErrorLi
         DataPoint[] forecastData = listOfValuesToDataPointArray(forecast);
         LineGraphSeries<DataPoint> forecastSeries = new LineGraphSeries<>(forecastData);
 
+        //graph series properties
         forecastSeries.setDrawDataPoints(true);
         forecastSeries.setDataPointsRadius(6);
         forecastSeries.setThickness(8);
@@ -161,10 +163,26 @@ public abstract class GraphFragment extends Fragment implements Response.ErrorLi
 
         //graph setup
         graphView.setTitle(measurementType);
+        graphView.setTitleTextSize(45.0f);
+        graphView.setTitleColor(0xff0000ff);
+
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setYAxisBoundsManual(true);
         graphView.getViewport().setScalable(true);
         graphView.getViewport().setScrollable(true);
+
+        // legend
+        readingsSeries.setTitle("observed");
+        forecastSeries.setTitle("forecast");
+        graphView.getLegendRenderer().setVisible(true);
+        if(measurementType.equalsIgnoreCase("humidity"))
+        {
+            graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.MIDDLE);
+        }
+        else
+        {
+            graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+        }
     }
 
     @Override
