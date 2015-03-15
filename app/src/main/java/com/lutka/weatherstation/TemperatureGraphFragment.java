@@ -26,6 +26,6 @@ public class TemperatureGraphFragment extends GraphFragment
     {
         super.onViewCreated(view, savedInstanceState);
         TextView reliabilityFigure = (TextView) view.findViewById(R.id.reliablityFigure);
-        reliabilityFigure.setText("reliability : 75%");
+        reliabilityFigure.setText("Correlation : 0.64");
     }
 }
